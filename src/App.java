@@ -1,149 +1,84 @@
+import java.util.Scanner;
+
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println(checkpasswordstrength("Ab1!cdef"));  //8
-        System.out.println(checkpasswordstrength("P@ssw0rd23232")); //10
-        System.out.println(checkpasswordstrength("Abc123!!!")); //(pattern penalty)    }
+        Scanner scanner = new Scanner(System.in);
+        boolean keepRunning = true;
+
+        // Main Loop
+        while (keepRunning) {
+            System.out.println("\n--------------------------------");
+            System.out.println("   Password Checker & Generator");
+            System.out.println("--------------------------------");
+            System.out.println("1. Check Password Strength");
+            System.out.println("2. Generate New Password");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
+
+            // Input validation
+            if (!scanner.hasNextInt()) {
+                System.out.println(">> Invalid input! Please enter a number.");
+                scanner.nextLine();
+                continue;
+            }
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    // start of password strength checking
+                    System.out.print("Enter password to check: ");
+                    String inputPass = scanner.nextLine();
+
+                    // for checking password strength
+                    int score = PasswordChecker.checkPasswordStrength(inputPass);
+
+                    System.out.println(">> Strength Score: " + score + "/10");
+                    displayStrengthMessage(score);
+                    break;
+
+                case 2:
+                    // start of password generation
+                    System.out.print("Enter desired length (minimum 8): ");
+                    if (scanner.hasNextInt()) {
+                        int len = scanner.nextInt();
+                        scanner.nextLine();
+
+                        // validation for length
+                        if (len < 8) {
+                            System.out.println(">> Error: Rules state minimum length is 8 characters.");
+                        } else {
+                            // generate password
+                            String newPass = PasswordGenerator.generatePassword(len);
+                            System.out.println(">> Generated Password: " + newPass);
+                        }
+                    } else {
+                        System.out.println(">> Invalid length!");
+                        scanner.nextLine();
+                    }
+                    break;
+
+                case 3:
+                    // Exit option
+                    keepRunning = false;
+                    System.out.println("Goodbye!");
+                    break;
+
+                default:
+                    System.out.println(">> Invalid choice, please try again.");
+            }
+        }
+        scanner.close();
     }
 
-
-
-
-
-
-    //a method to return password strength on a scale of 1-10
-    public static  int checkpasswordstrength(String password) {
-        int strength = 0;
-
-        //length check
-
-        if (password.length() >= 8) {
-            strength += 2;
-        } else if (password.length() >= 5) {
-            strength += 1;
-        }
-
-        
-        //lowercase  check 
-        boolean hasLower = false;
-        for (char c : password.toCharArray()) {
-            if (c >= 'a' && c <= 'z') {
-                hasLower = true;
-                break;
-            }
-        }
-
-        if (hasLower) {
-            strength += 2;
-        }
-
-        
-        
-        //uppercase check
-        
-        boolean hasupper = false;
-        for (char c : password.toCharArray()) {
-            if (c >= 'A' && c <= 'Z') {
-                hasupper = true;
-                break;
-            }
-        }
-
-        if (hasupper) {
-            strength += 2;
-        }
-
-
-
-
-
-        //digit check
-        /* 
-        if (password.matches(".*\\d.*")) {
-            strength += 2;
-        }
-        */
-        boolean hasDigit = false;
-        for (char c : password.toCharArray()) {
-            if (c >= '0' && c <= '9') {
-                hasDigit = true;
-                break;
-            }
-        }
-        if (hasDigit) {
-            strength += 2;
-        }
-
-
-
-
-
-
-
-
-
-
-        //special character check
-
-        /*if (password.matches(".*[!@#$%^&*()-+].*")) {
-            strength += 2;
-        }
-        */
-
-        boolean hasSpecial = false;
-        String specialChars = "!@#$%^&*()-+";
-        for (char c : password.toCharArray()) {
-            if (specialChars.indexOf(c) != -1) {
-                hasSpecial = true;
-                break;
-            }
-        }
-        if (hasSpecial) {
-            strength += 2;
-        }
-
-
-        //check patterns penalities 
-        for(int i=0; i<password.length()-2; i++) {
-            char first = password.charAt(i);
-            char second = password.charAt(i+1);
-            char third = password.charAt(i+2);
-
-            if((first==second && second==third)||
-            (first+1==second && second+1==third)||
-            (first-1==second && second-1==third)) {
-                strength -= 2;
-                break;
-            }
-        }
-
-
-
-
-
-        return Math.min(strength, 10);
-        
+    // for displaying strength message
+    private static void displayStrengthMessage(int score) {
+        if (score < 5)
+            System.out.println("(Weak Password)");
+        else if (score < 8)
+            System.out.println("(Moderate Password)");
+        else
+            System.out.println("(Strong Password)");
     }
-
-    public static int countuppercase(String password) {
-        int count = 0;
-        for (char c : password.toCharArray()) {
-            if (c>='A' && c<='Z') {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public static int countlowercase(String password) {
-        int count = 0;
-        for (char c : password.toCharArray()) {
-            if (c >= 'a' && c <= 'z') {
-                count++;
-            }
-        }
-        return count;
-    }
-
-
-
 }
