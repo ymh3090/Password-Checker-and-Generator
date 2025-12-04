@@ -1,6 +1,8 @@
-import java.util.Random;
+import java.security.SecureRandom;
+import java.util.*;
 
 public class PasswordGenerator {
+    private static final SecureRandom rnd = new SecureRandom();
     
     public static String generatePassword(int length) {
         String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -9,7 +11,6 @@ public class PasswordGenerator {
         String special = "!@#$%^&*()-+_=[]{}|<>?/~";
         String all = upper + lower + digits + special;
         StringBuilder pass = new StringBuilder();
-        Random rnd = new Random();
 
         pass.append(upper.charAt(rnd.nextInt(upper.length())));
         pass.append(lower.charAt(rnd.nextInt(lower.length())));
@@ -20,6 +21,16 @@ public class PasswordGenerator {
             pass.append(all.charAt(rnd.nextInt(all.length())));
         }
 
-        return pass.toString();
+        char[] newpassword=pass.toString().toCharArray();
+
+        for (int i = newpassword.length - 1; i > 0; i--) {
+            int j = rnd.nextInt(i + 1);
+            // Swap to overcome predictability
+            char temp = newpassword[i];
+            newpassword[i] = newpassword[j];
+            newpassword[j] = temp;
+        }
+
+        return new String(newpassword);
     }
 }

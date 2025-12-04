@@ -80,7 +80,7 @@ public class PasswordChecker {
     // counts special characters in the password
     public static int countSpecialChars(String password) { 
         int count = 0;
-        String specialChars = "!@#$%^&*()-+";
+        String specialChars = "!@#$%^&*()-+_=[]{}|<>?/~";
         for (char c : password.toCharArray()) {
             if (specialChars.indexOf(c) != -1) count++;
         }
