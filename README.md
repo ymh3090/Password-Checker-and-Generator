@@ -42,5 +42,5 @@ A simple tool to check password strength and generate secure passwords.
 - Minimum password length: **8 characters**
 - Generated passwords include all character types
 - Random distribution ensures unpredictability
-- Check multiple passwords in one session
 
+![Project Logo](./Hive-passwords.jpg)
