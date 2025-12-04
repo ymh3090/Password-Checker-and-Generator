@@ -1,80 +1,56 @@
 public class PasswordChecker {
 
-    // دالة الفحص الرئيسية
-    public static int checkPasswordStrength(String password) {
+    // a method to return password strength on a scale of 1-10
+    public static int checkpasswordstrength(String password) {
         int strength = 0;
 
-        // 1. Length Check
+        // 1. Length check
         if (password.length() >= 8) {
             strength += 2;
         } else if (password.length() >= 5) {
             strength += 1;
         }
 
-        // 2. Lowercase Check
-        if (hasLowercase(password)) strength += 2;
+        // 2. Uppercase check
+        if (countUppercase(password) > 0) {
+            strength += 2;
+        }
 
-        // 3. Uppercase Check
-        if (hasUppercase(password)) strength += 2;
+        //  3. Lowercase check
+        if (countLowercase(password) > 0) {
+            strength += 2; 
+        }
 
-        // 4. Digit Check
-        if (hasDigit(password)) strength += 2;
+        // 4. Digit check
+        if (countDigits(password) > 0) {
+            strength += 2;
+        }
 
-        // 5. Symbol Check
-        if (hasSymbol(password)) strength += 2;
+        // 5. Special character check
+        if (countSpecialChars(password) > 0) {
+            strength += 2;
+        }
 
-        // 6. Pattern Penalty (كود زميلك للأنماط المتكررة)
-        for(int i=0; i<password.length()-2; i++) {
+        // 6. Check patterns penalties
+        for (int i = 0; i < password.length() - 2; i++) {
             char first = password.charAt(i);
-            char second = password.charAt(i+1);
-            char third = password.charAt(i+2);
+            char second = password.charAt(i + 1);
+            char third = password.charAt(i + 2);
 
-            if((first==second && second==third)||
-            (first+1==second && second+1==third)||
-            (first-1==second && second-1==third)) {
+            if ((first == second && second == third) ||
+                    (first + 1 == second && second + 1 == third) ||
+                    (first - 1 == second && second - 1 == third)) {
                 strength -= 2;
                 break;
             }
         }
 
+        if (strength < 0) strength = 0;
+
         return Math.min(strength, 10);
     }
 
-    //       --- The Main Functions  ---
-
-    private static boolean hasLowercase(String password) {
-        for (char c : password.toCharArray()) {
-            if (c >= 'a' && c <= 'z') return true;
-        }
-        return false;
-    }
-
-    private static boolean hasUppercase(String password) {
-        for (char c : password.toCharArray()) {
-            if (c >= 'A' && c <= 'Z') return true;
-        }
-        return false;
-    }
-
-    private static boolean hasDigit(String password) {
-        for (char c : password.toCharArray()) {
-            if (c >= '0' && c <= '9') return true;
-        }
-        return false;
-    }
-
-    private static boolean hasSymbol(String password) {
-        String specialChars = "!@#$%^&*()-+";
-        for (char c : password.toCharArray()) {
-            if (specialChars.indexOf(c) != -1) return true;
-        }
-        return false;
-    }
-
-
-    //    --- The Counting Functions  ---
-
-
+    // counts uppercase in the password
     public static int countUppercase(String password) {
         int count = 0;
         for (char c : password.toCharArray()) {
@@ -83,7 +59,7 @@ public class PasswordChecker {
         return count;
     }
 
-
+    // counts lowercase in the password
     public static int countLowercase(String password) {
         int count = 0;
         for (char c : password.toCharArray()) {
@@ -92,8 +68,8 @@ public class PasswordChecker {
         return count;
     }
 
-
-    public static int countNumbers(String password) {
+    // counts digits in the password
+    public static int countDigits(String password) { 
         int count = 0;
         for (char c : password.toCharArray()) {
             if (c >= '0' && c <= '9') count++;
@@ -101,7 +77,8 @@ public class PasswordChecker {
         return count;
     }
 
-    public static int countSymbols(String password) {
+    // counts special characters in the password
+    public static int countSpecialChars(String password) { 
         int count = 0;
         String specialChars = "!@#$%^&*()-+";
         for (char c : password.toCharArray()) {
