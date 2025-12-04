@@ -34,8 +34,6 @@ A simple tool to check password strength and generate secure passwords.
 2. Receive a cryptographically strong password
 3. Copy and use immediately
 
-##  Usage Example
-
 
 ## 🛡️ Security Rules
 
