@@ -34,13 +34,12 @@ A simple tool to check password strength and generate secure passwords.
 2. Receive a cryptographically strong password
 3. Copy and use immediately
 
-##  Usage Example
-
 
 ## 🛡️ Security Rules
 
 - Minimum password length: **8 characters**
 - Generated passwords include all character types
 - Random distribution ensures unpredictability
-- Check multiple passwords in one session
 
+##THIS IS HOW MUCH TIME YOUR PASSWROD CAN BE CREACKED BY THESE DAYS CRACKING ALGORITHMS. SO CHOOSE YOUR PASSWORD WISELY.
+![Project Logo](./Hive-passwords.jpg)
