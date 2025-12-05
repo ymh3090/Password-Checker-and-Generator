@@ -38,14 +38,16 @@ public class PasswordChecker {
             char third = password.charAt(i + 2);
 
             if ((first == second && second == third) ||
-                    (first + 1 == second && second + 1 == third) ||
-                    (first - 1 == second && second - 1 == third)) {
-                strength -= 2;
-                break;
+                (first + 1 == second && second + 1 == third) ||
+                (first - 1 == second && second - 1 == third)) {
+                
+                    strength -= 2;
+                    break;
             }
         }
 
-        if (strength < 0) strength = 0;
+        if (strength < 0) 
+            strength = 0;
 
         return Math.min(strength, 10);
     }
@@ -71,7 +73,7 @@ public class PasswordChecker {
     // counts digits in the password
     public static int countDigits(String password) { 
         int count = 0;
-        for (char c : password.toCharArray()) {
+        for (char c:password.toCharArray()) {
             if (c >= '0' && c <= '9') count++;
         }
         return count;
@@ -81,7 +83,8 @@ public class PasswordChecker {
     public static int countSpecialChars(String password) { 
         int count = 0;
         String specialChars = "!@#$%^&*()-+_=[]{}|<>?/~";
-        for (char c : password.toCharArray()) {
+        
+        for (char c:password.toCharArray()) {
             if (specialChars.indexOf(c) != -1) count++;
         }
         return count;

@@ -19,13 +19,21 @@ public class App {
             System.out.println("2. Generate New Password");
             System.out.println("3. Exit");
             System.out.print("Choose an option: ");
+
             if (!input.hasNextInt()) {
                 System.out.println(">> Invalid input, please enter a number.");
                 input.nextLine();
                 continue;
             }
+
             int choice = input.nextInt();
-            input.nextLine();
+            input.nextLine();  // Add this to consume the newline
+
+            if( choice < 1 || choice > 3 ) {
+                System.out.println(">> Invalid choice, please try again.");
+                continue;
+            }
+
             switch (choice) {
                 case 1:
                     choice1();
@@ -48,33 +56,54 @@ public class App {
         System.out.print("Enter password to check: ");
         String inputPass = input.nextLine();
 
-        System.out.println(">> Strength Score: " + PasswordChecker.checkpasswordstrength(inputPass) + "/10");
+        if (inputPass.trim().isEmpty()) {
+            System.out.println(">> Invalid input! Please enter a password.");
+            lines();
+            return;
+        }
+
+        byte x = (byte)PasswordChecker.checkpasswordstrength(inputPass);
+
+        System.out.println(">> Strength Score: " + x + "/10");
+        System.out.println(">> Strength Level: " + getStrengthLabel(x));
+
+        System.out.println("   length: " + inputPass.length());
         System.out.println("   Uppercase Letters: " + PasswordChecker.countUppercase(inputPass));
         System.out.println("   Lowercase Letters: " + PasswordChecker.countLowercase(inputPass));
         System.out.println("   Digits: " + PasswordChecker.countDigits(inputPass));
-        System.out.println("   Special Characters: " + PasswordChecker.countSpecialChars(inputPass));
+        System.out.print("   Special Characters: " + PasswordChecker.countSpecialChars(inputPass));
         lines();
     }
 
     public static void choice2() {
-
         System.out.print("Enter desired length (minimum 8): ");
+
         if (input.hasNextInt()) {
             int len = input.nextInt();
             input.nextLine();
+
             if (len < 8) {
                 System.out.println(">> Error: Rules state minimum length is 8 characters.");
-            } else {
+            } 
+            else {
                 System.out.println("here are few passwords:");
                 for (int i = 0; i < 5; i++) {
                     System.out.println(">> " + PasswordGenerator.generatePassword(len));
                 }
             }
-        } else {
+        } 
+        else {
             System.out.println(">> Invalid length!");
             input.nextLine();
         }
+    }
 
+    public static String getStrengthLabel(int score) {
+        if (score >= 9) return "Very Strong";
+        if (score >= 7) return "Strong";
+        if (score >= 5) return "Moderate";
+        if (score >= 3) return "Weak";
+        return "Very Weak";
     }
 
     public static void lines() {
