@@ -41,4 +41,5 @@ A simple tool to check password strength and generate secure passwords.
 - Generated passwords include all character types
 - Random distribution ensures unpredictability
 
+##THIS IS HOW MUCH TIME YOUR PASSWROD CAN BE CREACKED BY THESE DAYS CRACKING ALGORITHMS. SO CHOOSE YOUR PASSWORD WISELY.
 ![Project Logo](./Hive-passwords.jpg)
