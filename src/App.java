@@ -17,7 +17,8 @@ public class App {
         while (true) {
             System.out.println("1. Check Password Strength");
             System.out.println("2. Generate New Password");
-            System.out.println("3. Exit");
+            System.out.println("3. custimsie your own password");
+            System.out.println("4. Exit");
             System.out.print("Choose an option: ");
 
             if (!input.hasNextInt()) {
@@ -44,13 +45,15 @@ public class App {
                     lines();
                     break;
                 case 3:
-                    System.out.println("Goodbye!");
+                    System.out.println(CYAN + "Tip: It's often better to have longer passwords than shorter, more complex ones" + RESET);
+                    makurown();
                     return;
                 default:
                     System.out.println(">> Invalid choice, please try again.");
             }
         }
     }
+
 
     public static void choice1() {
         System.out.print("Enter password to check: ");
@@ -96,6 +99,28 @@ public class App {
             System.out.println(">> Invalid length!");
             input.nextLine();
         }
+    }
+
+    public static void makurown(){
+        System.out.print("Enter desired length : ");
+        
+        if (input.hasNextInt()) {
+            int len = input.nextInt();
+            input.nextLine();
+
+            if (len < 8) {
+                System.out.println(">> Error: Rules state minimum length is 8 characters.");
+            } 
+            else {
+                System.out.println("here are few passwords:");
+                for (int i = 0; i < 5; i++) {
+                    System.out.println("pass no."+ ++i +PasswordGenerator.generatePassword(len));
+                }
+            }
+        }
+
+        
+
     }
 
     public static String getStrengthLabel(int score) {
