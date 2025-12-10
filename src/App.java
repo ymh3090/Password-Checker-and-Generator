@@ -1,20 +1,64 @@
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class App {
     public static final String RESET = "\033[0m";
     public static final String CYAN = "\033[0;36m";
-    private static Scanner input; // so it's accessible to all methods
+    private static Scanner input;
+    private static final String FILE_PATH = "data.json";
+    
+    public static JSONObject obj = new JSONObject();
+    
 
     public static void main(String[] args) throws Exception {
+    
+        // Load existing JSON data if file exists
+        loadJsonData();
         input = new Scanner(System.in);
-        System.out.println();
-        System.out.println();
         mainMenu();
         input.close();
     }
 
+    public static void loadJsonData(){
+        try {
+            File file = new File(FILE_PATH);
+            if (file.exists()) {
+                String content = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
+                if (!content.trim().isEmpty()) {
+                    obj = new JSONObject(content);
+                }
+            }
+        } catch (Exception e) {
+            obj = new JSONObject();
+        }
+    }
+
+    // Save JSON data to file
+    public static void saveJsonData() {
+        try (FileWriter file = new FileWriter(FILE_PATH)) {
+            file.write(obj.toString(4));
+            System.out.println(">> Passwords saved.");
+        } catch (IOException e) {
+            System.out.println(">> Error saving data: " + e.getMessage());
+        }
+    }
+
+    public static String createTimestamp() {
+        LocalDateTime now = LocalDateTime.now();
+        return now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+
     public static void mainMenu() {
+        lines();
         while (true) {
+
             System.out.println("1. Check Password Strength");
             System.out.println("2. Generate New Password");
             System.out.println("3. custimsie your own password");
@@ -30,11 +74,6 @@ public class App {
             int choice = input.nextInt();
             input.nextLine();  // Add this to consume the newline
 
-            if( choice < 1 || choice > 3 ) {
-                System.out.println(">> Invalid choice, please try again.");
-                continue;
-            }
-
             switch (choice) {
                 case 1:
                     choice1();
@@ -47,6 +86,9 @@ public class App {
                 case 3:
                     System.out.println(CYAN + "Tip: It's often better to have longer passwords than shorter, more complex ones" + RESET);
                     makurown();
+                    lines();
+                    break;
+                case 4:
                     return;
                 default:
                     System.out.println(">> Invalid choice, please try again.");
@@ -58,10 +100,10 @@ public class App {
     public static void choice1() {
         System.out.print("Enter password to check: ");
         String inputPass = input.nextLine();
+        boolean goodlenght = inputPass.length() >= 8 && inputPass.length() <= 20;
 
-        if (inputPass.trim().isEmpty()) {
-            System.out.println(">> Invalid input! Please enter a password.");
-            lines();
+        if (!goodlenght && !(inputPass.length()>0)) {
+            System.out.println(">> Error: Password length must be between 8 and 20 characters.");
             return;
         }
 
@@ -74,7 +116,7 @@ public class App {
         System.out.println("   Uppercase Letters: " + PasswordChecker.countUppercase(inputPass));
         System.out.println("   Lowercase Letters: " + PasswordChecker.countLowercase(inputPass));
         System.out.println("   Digits: " + PasswordChecker.countDigits(inputPass));
-        System.out.print("   Special Characters: " + PasswordChecker.countSpecialChars(inputPass));
+        System.out.println("   Special Characters: " + PasswordChecker.countSpecialChars(inputPass));
         lines();
     }
 
@@ -85,14 +127,24 @@ public class App {
             int len = input.nextInt();
             input.nextLine();
 
-            if (len < 8) {
+            if (len < 8 || len > 20) {
                 System.out.println(">> Error: Rules state minimum length is 8 characters.");
+                mainMenu();
             } 
             else {
                 System.out.println("here are few passwords:");
+                JSONArray passwords = new JSONArray();
                 for (int i = 0; i < 5; i++) {
-                    System.out.println(">> " + PasswordGenerator.generatePassword(len));
+                    String p = PasswordGenerator.generatePassword(len);
+                    System.out.println(">> " + p);
+                    passwords.put(p);    
                 }
+                passwords.put(">> Passwords generated with length: " + len);
+
+                // Save generated passwords with timestamp
+                String timestamp = createTimestamp();
+                obj.put(timestamp, passwords);
+                saveJsonData();
             }
         } 
         else {
@@ -102,20 +154,86 @@ public class App {
     }
 
     public static void makurown(){
-        System.out.print("Enter desired length : ");
+        System.out.print("Enter desired length: ");
+        /*
+        "Include lowercase? (y/n)"
+
+        "Include uppercase? (y/n)"
+
+        "Include digits? (y/n)"
+
+        "Include symbols? (y/n)" 
+        
+        */
+
         
         if (input.hasNextInt()) {
             int len = input.nextInt();
             input.nextLine();
 
-            if (len < 8) {
+            if (len < 8 || len > 20) {
                 System.out.println(">> Error: Rules state minimum length is 8 characters.");
+                mainMenu();
             } 
             else {
-                System.out.println("here are few passwords:");
-                for (int i = 0; i < 5; i++) {
-                    System.out.println("pass no."+ ++i +PasswordGenerator.generatePassword(len));
+                boolean includeLower = false;
+                boolean includeUpper = false;
+                boolean digits=false;
+                boolean symbols=false;
+                System.out.println("include loweercase? (y/n)");
+                switch (input.nextLine().trim().toLowerCase()) {
+                    case "y":
+                        includeLower = true;
+                        break;
+                    default:
+                        System.out.println(">> Invalid input, assuming 'n'");
                 }
+
+
+                System.out.println("include uppercase? (y/n)");
+                switch (input.nextLine().trim().toLowerCase()) {
+                    case "y":
+                        includeUpper = true;
+                        break;
+                    default:
+                        System.out.println(">> Invalid input, assuming 'n'");
+                }
+
+                System.out.println("include digits? (y/n)");
+                switch (input.nextLine().trim().toLowerCase()) {
+                    case "y":
+                        digits = true;
+                        break;
+                    default:
+                        System.out.println(">> Invalid input, assuming 'n'");
+                }
+
+                System.out.println("include symbols? (y/n)");
+                switch (input.nextLine().trim().toLowerCase()) {
+                    case "y":
+                        symbols = true;
+                        break;
+                    default:
+                        System.out.println(">> Invalid input, assuming 'n'");
+                }
+
+
+
+                System.out.println("here are few passwords:");
+                JSONArray passwords = new JSONArray();
+
+
+                for (int i=0;i<5;i++) {
+                    String password = PasswordGenerator.generatePassword(len, includeUpper, includeLower, digits, symbols);
+                    System.out.println(">> " + password);
+                    passwords.put(password);
+                }
+                // Save generated passwords with timestamp
+                String timestamp = createTimestamp();
+                obj.put(timestamp, passwords);
+                obj.put("length", len);
+                saveJsonData();
+
             }
         }
 
