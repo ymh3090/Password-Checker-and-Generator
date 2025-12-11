@@ -155,16 +155,6 @@ public class App {
 
     public static void makurown(){
         System.out.print("Enter desired length: ");
-        /*
-        "Include lowercase? (y/n)"
-
-        "Include uppercase? (y/n)"
-
-        "Include digits? (y/n)"
-
-        "Include symbols? (y/n)" 
-        
-        */
 
         
         if (input.hasNextInt()) {
@@ -172,41 +162,13 @@ public class App {
             input.nextLine();
 
             if (len < 8 || len > 20) {
-                System.out.println(">> Error: Rules state minimum length is 8 characters.");
+                System.out.println(">> Error: Rules state minimum length is 8 characters and smaller than 20.");
                 mainMenu();
             } 
             else {
-                boolean includeLower = false;
-                boolean includeUpper = false;
-                boolean digits=false;
                 boolean symbols=false;
-                System.out.println("include loweercase? (y/n)");
-                switch (input.nextLine().trim().toLowerCase()) {
-                    case "y":
-                        includeLower = true;
-                        break;
-                    default:
-                        System.out.println(">> Invalid input, assuming 'n'");
-                }
 
-
-                System.out.println("include uppercase? (y/n)");
-                switch (input.nextLine().trim().toLowerCase()) {
-                    case "y":
-                        includeUpper = true;
-                        break;
-                    default:
-                        System.out.println(">> Invalid input, assuming 'n'");
-                }
-
-                System.out.println("include digits? (y/n)");
-                switch (input.nextLine().trim().toLowerCase()) {
-                    case "y":
-                        digits = true;
-                        break;
-                    default:
-                        System.out.println(">> Invalid input, assuming 'n'");
-                }
+                System.out.println(CYAN+"it's better to include symbols to increase password strength"+RESET);
 
                 System.out.println("include symbols? (y/n)");
                 switch (input.nextLine().trim().toLowerCase()) {
@@ -214,7 +176,7 @@ public class App {
                         symbols = true;
                         break;
                     default:
-                        System.out.println(">> Invalid input, assuming 'n'");
+                        System.out.println(">> assuming 'n'");
                 }
 
 
@@ -224,7 +186,7 @@ public class App {
 
 
                 for (int i=0;i<5;i++) {
-                    String password = PasswordGenerator.generatePassword(len, includeUpper, includeLower, digits, symbols);
+                    String password = PasswordGenerator.generatePassword(len, symbols);
                     System.out.println(">> " + password);
                     passwords.put(password);
                 }

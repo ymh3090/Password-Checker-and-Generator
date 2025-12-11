@@ -34,7 +34,7 @@ public class PasswordGenerator {
         return new String(newpassword);
     }
 
-    public static String generatePassword(int length, boolean Upper, boolean Lower, boolean Digits, boolean Symbols) {
+    public static String generatePassword(int length, boolean Symbols) {
         String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lower = "abcdefghijklmnopqrstuvwxyz";
         String digits = "0123456789";
@@ -43,24 +43,18 @@ public class PasswordGenerator {
         StringBuilder pass = new StringBuilder();
 
         
-       for(int i=0;i<length;i++){
-              if(Upper){
-                pass.append(upper.charAt(rnd.nextInt(upper.length())));
-                i++;
-              }
-              if(Lower){
-                pass.append(lower.charAt(rnd.nextInt(lower.length())));
-                i++;
-              }
-              if(Digits){
-                pass.append(digits.charAt(rnd.nextInt(digits.length())));
-                i++;
-              }
-              if(Symbols){
-                pass.append(special.charAt(rnd.nextInt(special.length())));
-                i++;
-              }
-       }
+          for(int i=0;i<length;i+=3){
+            
+              pass.append(upper.charAt(rnd.nextInt(upper.length())));
+              pass.append(lower.charAt(rnd.nextInt(lower.length())));
+              pass.append(digits.charAt(rnd.nextInt(digits.length())));
+
+            if(Symbols){
+              pass.append(special.charAt(rnd.nextInt(special.length())));
+              i++;
+            }
+
+          }
 
         
 
