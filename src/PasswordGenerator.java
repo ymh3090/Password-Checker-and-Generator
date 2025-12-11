@@ -2,7 +2,7 @@ import java.security.SecureRandom;
 
 public class PasswordGenerator {
     private static final SecureRandom rnd = new SecureRandom();
-    
+
     public static String generatePassword(int length) {
         String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lower = "abcdefghijklmnopqrstuvwxyz";
@@ -21,7 +21,7 @@ public class PasswordGenerator {
             pass.append(all.charAt(rnd.nextInt(all.length())));
         }
 
-        char[] newpassword=pass.toString().toCharArray();
+        char[] newpassword = pass.toString().toCharArray();
 
         for (int i = newpassword.length - 1; i > 0; i--) {
             int j = rnd.nextInt(i + 1);
@@ -34,35 +34,29 @@ public class PasswordGenerator {
         return new String(newpassword);
     }
 
-    public static String generatePassword(int length, boolean Symbols) {
+    public static String generatePassword(int length, boolean useSymbols) {
         String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lower = "abcdefghijklmnopqrstuvwxyz";
         String digits = "0123456789";
         String special = "!@#$%^&*()-+_=[]{}|<>?/~";
-        String all = upper + lower + digits + special;
         StringBuilder pass = new StringBuilder();
 
+        pass.append(upper.charAt(rnd.nextInt(upper.length())));
+        pass.append(lower.charAt(rnd.nextInt(lower.length())));
+        pass.append(digits.charAt(rnd.nextInt(digits.length())));
+        if (useSymbols) {
+            pass.append(special.charAt(rnd.nextInt(special.length())));
+        }
         
-          for(int i=0;i<length;i+=3){
-            
-              pass.append(upper.charAt(rnd.nextInt(upper.length())));
-              pass.append(lower.charAt(rnd.nextInt(lower.length())));
-              pass.append(digits.charAt(rnd.nextInt(digits.length())));
+        String all = upper + lower + digits + (useSymbols ? special : "");
 
-            if(Symbols){
-              pass.append(special.charAt(rnd.nextInt(special.length())));
-              i++;
-            }
+        while (pass.length() < length) {
+            pass.append(all.charAt(rnd.nextInt(all.length())));
+        }
 
-          }
-
-        
-
-        char[] newpassword=pass.toString().toCharArray();
-
+        char[] newpassword = pass.toString().toCharArray();
         for (int i = newpassword.length - 1; i > 0; i--) {
             int j = rnd.nextInt(i + 1);
-            // Swap to overcome predictability
             char temp = newpassword[i];
             newpassword[i] = newpassword[j];
             newpassword[j] = temp;
