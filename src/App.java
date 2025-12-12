@@ -136,7 +136,7 @@ public class App {
                 System.out.println("here are few passwords:");
                 JSONObject entry = new JSONObject();
                 entry.put("length", len);
-                entry.put("type", "Standard")
+                entry.put("type", "Standard");
                 JSONArray passwords = new JSONArray();
                 for (int i = 0; i < 5; i++) {
                     String p = PasswordGenerator.generatePassword(len);
@@ -200,6 +200,7 @@ public class App {
                     System.out.println(">> " + password);
                     passwords.put(password);
                 }
+                entry.put("passwords",passwords);
                 // Save generated passwords with timestamp
                 String timestamp = createTimestamp();
                 obj.put(timestamp, entry);

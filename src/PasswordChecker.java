@@ -1,7 +1,7 @@
 public class PasswordChecker {
 
     // a method to return password strength on a scale of 1-10
-    public static int checkpasswordstrength(String password) {
+    public static int checkpasswordStrength(String password) {
         int strength = 0;
 
         // 1. Length check
