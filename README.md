@@ -41,5 +41,16 @@ A simple tool to check password strength and generate secure passwords.
 - Generated passwords include all character types
 - Random distribution ensures unpredictability
 
-##THIS IS HOW MUCH TIME YOUR PASSWROD CAN BE CREACKED BY THESE DAYS CRACKING ALGORITHMS. SO CHOOSE YOUR PASSWORD WISELY.
-![Project Logo](./Hive-passwords.jpg)
+## THIS IS HOW MUCH TIME YOUR PASSWROD CAN BE CREACKED. SO CHOOSE YOUR PASSWORD WISELY.
+
+## ![Project Logo](./Hive-passwords.jpg)
+
+
+
+
+
+
+### to run this project download jar file in the relaese and and open the terminal in the same directory the jar file exists and type 
+<div style="background-color: #f2f2f2; border: 2px solid #535353; padding: 15px; border-radius: 10px;">
+  java -jar Password-Checker-and-Generator.jar
+</div>
